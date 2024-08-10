@@ -62,22 +62,4 @@ data TruthTable = TruthTable
 
 
 
-data MastubatoryFactors = AccessToPornography Bool
-                        | AccessToSexToys Bool
-                        | DaysSinceLastEjaculation Int
-                        | AverageEjaculationPerWeek Float
-                        | HealthyHormones Bool
-                        | TestosteroneLevels Float
-                        | RelationShipStatus String
-                        | BeliefsAboutMasturbation String
-                        | LivingSituation String
-                        | LocationTheyWillSleepTonight String
-                        | Mood
-                        deriving (Show, Eq)
-data Mood = Sad
-          | Happy
-          | Angry
-          | Horny
-          | Hungry
-          deriving (Show, Eq)
 
