@@ -1,10 +1,9 @@
 # *Truth Table Generator* 
-> This program has an Elm front end for a web app, 
-> and a Haskell back end. 
-> It is still being edited to add 
-1. Testing for backend and front end. 
-2. Better UI for more attractiveness. 
-3. More logical operators. 
+This program has an Elm front end for a web app, and a Haskell back end. 
+It is still being edited to add 
+> 1. Testing for backend and front end. 
+> 2. Better UI for more attractiveness. 
+> 3. More logical operators. 
  **Pictures of front end web app** 
 
 ### Acknowledgements
