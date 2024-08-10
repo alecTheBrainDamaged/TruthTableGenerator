@@ -4,7 +4,8 @@ It is still being edited to add
 > 1. Testing for backend and front end. 
 > 2. Better UI for more attractiveness. 
 > 3. More logical operators. 
- **Pictures of front end web app** 
+
+**Pictures of front end web app** 
 
 ### Acknowledgements
 elm-ui package helped me.
