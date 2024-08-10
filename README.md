@@ -23,5 +23,5 @@ logic, veganism, functional programming, philosophy, and debates.
 
 AI helped me when I was stuck . 
 But I learned how to do things with them. 
-[Open AI] (https://openai.com/) 
-[Claude from Anthropic] (https://www.anthropic.com/)
+[Open AI](https://openai.com/) 
+[Claude from Anthropic](https://www.anthropic.com/)
