@@ -6,7 +6,10 @@ It is still being edited to add
 > 3. More logical operators. 
 
 **Pictures of front end web app** 
-
+![Propositions Only](<img src="blob:chrome-untrusted://media-app/54550a30-e765-4a1f-a58f-63c081df6f54" alt="Screenshot 2024-08-10 3.44.22 PM.png"/>![image](https://github.com/user-attachments/assets/2ca59cac-d211-4e3a-93da-293578437c27)
+)
+![Propositional logic argument validity checker](<img src="blob:chrome-untrusted://media-app/5e012a1c-90a0-4320-8949-255b8aa45da7" alt="Screenshot 2024-08-10 3.45.25 PM.png"/>![image](https://github.com/user-attachments/assets/675c4303-de10-46c2-9fe0-ef97282c0b86)
+)
 ### Acknowledgements
 elm-ui package helped me.
 [elm-ui](https://package.elm-lang.org/packages/mdgriffith/elm-ui/latest/)
