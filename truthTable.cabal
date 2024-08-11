@@ -22,9 +22,10 @@ executable truthTable
     -- other-extensions:
     build-depends:    base ^>=4.17.2.1,
                       text >= 2.1.1,
-		      megaparsec >= 9.6.1,
+                      megaparsec >= 9.6.1,
                       parser-combinators >= 1.3.0,
                       scotty,
+                      wai-middleware-static,
                       aeson
     hs-source-dirs:   app, src
     default-language: Haskell2010
