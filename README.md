@@ -29,7 +29,8 @@ and made me interested in learning about logic especially propositional logic
 and Haskell and Elm. He is building a website soon, stay tune for that if you like 
 logic, veganism, functional programming, philosophy, and debates. 
 [Ask Yourself](https://youtube.com/@askyourself?si=4yBpzSoCtESBdr9D) 
-
+His twitter with link to his discord server: 
+ [AY Twitter](https://x.com/askyourself92?s=21)
 
 AI helped me when I was stuck . 
 But I learned how to do things with them. 
