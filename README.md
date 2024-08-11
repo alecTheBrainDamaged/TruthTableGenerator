@@ -15,7 +15,8 @@ Generate Truth Table for Propositions.
 ![Screenshot 2024-08-11 10 07 50 AM](https://github.com/user-attachments/assets/e750b3e3-a1d7-45c2-b4a4-cd8c50a8ec5a)
 
 Generate Truth Table for Arguments in propositional logic. 
-![image](https://github.com/user-attachments/assets/6ab55039-ff14-42df-8e05-72c7c3cd7a0b)
+![Screenshot 2024-08-11 10 16 04 AM](https://github.com/user-attachments/assets/9911fe2d-5a1f-45cd-8493-ba88b57ce892)
+
 
 
 ### Acknowledgements
