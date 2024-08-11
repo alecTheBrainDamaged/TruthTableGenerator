@@ -23,24 +23,21 @@ Generate Truth Table for Arguments in propositional logic.
 
 
 ### Acknowledgements
+People helped me choose the tools to use . 
 elm-ui package helped me.
 [elm-ui](https://package.elm-lang.org/packages/mdgriffith/elm-ui/latest/)
 
+
 For back end , this parser library helped me, especailly their tutorial. 
 [Haskell Text.Megaparsec](https://hackage.haskell.org/package/megaparsec)
-
+ 
 I defined colors for light and dark mode using this color style and set of colors. 
 [Color Palette](https://github.com/catppuccin/catppuccin) 
 
-"Ask Yourself" the Youtuber, helped me with tool recomendations like packages, and languages to use
-and made me interested in learning about logic especially propositional logic 
-and Haskell and Elm. He is building a website soon so stay tune for that if you like 
-logic, veganism, functional programming, philosophy, and debates. 
-[Ask Yourself's Youtube Channel](https://youtube.com/@askyourself?si=4yBpzSoCtESBdr9D) 
-His twitter link: 
- [AY Twitter](https://x.com/askyourself92?s=21)
-This is the font I will be using which is why the css file is there. Somebody else mentioned this but I do not know if they want to be mentioned. 
+This is the font I will be using which is why the css file is there.
 [Lexend website](https://www.lexend.com/)
+
+
 AI helped me when I was stuck . 
 But I learned how to do things with them. 
 [Open AI](https://openai.com/) 
