@@ -25,6 +25,9 @@ elm-ui package helped me.
 For back end , this parser library helped me, especailly their tutorial. 
 [Haskell Text.Megaparsec](https://hackage.haskell.org/package/megaparsec)
 
+I defined colors for light and dark mode using this color style and set of colors. 
+[Color Palette](https://github.com/catppuccin/catppuccin) 
+
 "Ask Yourself" the Youtuber, helped me with tool recomendations like packages, and languages to use
 and made me interested in learning about logic especially propositional logic 
 and Haskell and Elm. He is building a website soon so stay tune for that if you like 
