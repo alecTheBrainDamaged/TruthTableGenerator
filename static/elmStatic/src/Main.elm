@@ -142,18 +142,18 @@ myArgumentBoxElement model =
 inputArgumentBox : Model -> Element Msg
 inputArgumentBox model = 
      case model.lightMode of
-      True -> EI.multiline [Font.color bodyCopyLight] 
+      True -> EI.multiline [Background.color surfaceElementLight,Font.color bodyCopyLight, Font.family [Font.typeface "Regular"]] 
               { onChange = UpdateArgument
               , text = model.argument
               , placeholder = Nothing
-              , label = EI.labelAbove [Font.color subHeadlinesLabelsLight] (E.text "Prop box")
+              , label = EI.labelAbove [Font.color subHeadlinesLabelsLight, Font.family [Font.typeface "Bold"]] (E.text "Prop Box")
               , spellcheck = False
               }
-      False -> EI.multiline [Font.color bodyCopyDark] 
+      False -> EI.multiline [Background.color surfaceElementDark, Font.color bodyCopyDark, Font.family [Font.typeface "Regular"]] 
                { onChange = UpdateArgument
                , text = model.argument
                , placeholder = Nothing
-               , label = EI.labelAbove [Font.color subHeadlinesLabelsDark] (E.text "Prop box")
+               , label = EI.labelAbove [Font.color subHeadlinesLabelsDark, Font.family [Font.typeface "Bold"]] (E.text "Prop Box")
                , spellcheck = False
                }
 
@@ -167,7 +167,7 @@ submitArgButton m =
             , B.color secondaryPaneLight
             , padding 30
             ]
-           (EI.button [pointer, Background.color overlayLight] 
+           (EI.button [pointer, Background.color surfaceElementLight] 
             { onPress = Just SendArgHttpPost
             , label = E.el [Font.color bodyCopyLight] (E.text "Submit")
             }
@@ -179,7 +179,7 @@ submitArgButton m =
             , B.color secondaryPaneDark
             , padding 30
             ]
-           (EI.button [pointer, Background.color overlayDark] 
+           (EI.button [pointer, Background.color surfaceElementDark] 
             { onPress = Just SendArgHttpPost
             , label = E.el [Font.color bodyCopyDark] (E.text "Submit")
             }
@@ -190,31 +190,33 @@ lightModebox m =
     case m.lightMode of
      True -> EI.checkbox
              [ Background.color surfaceElementLight
-             , E.focused [Background.color overlayLight]
              , pointer
              ]
              {onChange = LightSwitch
              , icon = defaultCheckbox
              , checked = m.lightMode
-             , label = EI.labelBelow [Font.color subHeadlinesLabelsLight] (E.text "Toggle Light Mode" )
+             , label = EI.labelBelow [Font.color subHeadlinesLabelsLight, Font.family [Font.typeface "Bold"]] (E.text "Toggle Light Mode" )
              } 
      False ->  EI.checkbox
              [ Background.color surfaceElementDark
-             , E.focused [Background.color overlayDark]
              , pointer
              ]
              {onChange = LightSwitch
              , icon = defaultCheckbox
              , checked = m.lightMode
-             , label = EI.labelBelow [Font.color subHeadlinesLabelsDark] (E.text "Toggle Light Mode" )
+             , label = EI.labelBelow [Font.color subHeadlinesLabelsDark, Font.family [Font.typeface "Bold"]] (E.text "Toggle Light Mode" )
              } 
 
 title : Model -> Element Msg
 title model =
   case model.lightMode of
    True -> E.el 
-           [ Background.color surfaceElementLight
+           [ 
+             Background.color surfaceElementLight
            , Font.color mainHeadlineLight
+           , Font.family
+             [Font.typeface "ExtraBold"
+             ]
            , B.rounded 3
            , padding 0
            , alignTop
@@ -224,6 +226,9 @@ title model =
    False ->  E.el 
              [ Background.color surfaceElementDark
              , Font.color mainHeadlineDark
+             , Font.family
+               [Font.typeface "ExtraBold"
+               ]
              , B.rounded 3
              , padding 0
              , alignTop
@@ -592,3 +597,4 @@ haskellResponseDecoder =
 subscriptions : Model -> Sub Msg
 subscriptions model = Sub.none
 --
+
