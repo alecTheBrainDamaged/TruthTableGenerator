@@ -16,6 +16,8 @@ import qualified Data.Text.Lazy as TL
 import Data.Text
 import Data.Maybe (fromJust)
 import Text.Megaparsec.Error (errorBundlePretty)
+import Network.Wai.Middleware.Static (staticPolicy, addBase)
+
 
 data ArgumentJSON = ArgumentJSON { argument :: String } deriving (Show, Generic)
 
@@ -105,8 +107,8 @@ data TruthTable = TruthTable
 
 main :: IO ()
 main = scotty 8000 $ do
-       get "/" $ do
-                  file "static/elmStatic/src/index.html"
+       middleware $ staticPolicy (addBase "static/elmStatic/src")
+       get "/" $ file "static/elmStatic/src/index.html"
        post "/api/submit" $ do
            body' <- jsonData :: ActionM ArgumentJSON
            let argString = argument body' :: String
@@ -127,8 +129,3 @@ main = scotty 8000 $ do
 
 --------------------------------------
 {-  HTML -}
-
-
-
-
-
