@@ -12,11 +12,12 @@ You can also enter more than one conclusion, if you seperate them also line by l
 
 
 Generate Truth Table for Propositions. 
-(<img src="blob:chrome-untrusted://media-app/54550a30-e765-4a1f-a58f-63c081df6f54" alt="Screenshot 2024-08-10 3.44.22 PM.png"/>![image](https://github.com/user-attachments/assets/2ca59cac-d211-4e3a-93da-293578437c27)
+(![Screenshot 2024-08-11 10 07 50 AM](https://github.com/user-attachments/assets/e750b3e3-a1d7-45c2-b4a4-cd8c50a8ec5a)
 )
 Generate Truth Table for Arguments in propositional logic. 
-(<img src="blob:chrome-untrusted://media-app/5e012a1c-90a0-4320-8949-255b8aa45da7" alt="Screenshot 2024-08-10 3.45.25 PM.png"/>![image](https://github.com/user-attachments/assets/675c4303-de10-46c2-9fe0-ef97282c0b86)
+(![image](https://github.com/user-attachments/assets/9f7fabc4-dfb3-4ff9-a32e-8125f1dc732e)
 )
+
 ### Acknowledgements
 elm-ui package helped me.
 [elm-ui](https://package.elm-lang.org/packages/mdgriffith/elm-ui/latest/)
