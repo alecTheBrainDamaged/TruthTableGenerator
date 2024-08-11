@@ -26,10 +26,10 @@ For back end , this parser library helped me, especailly their tutorial.
 
 "Ask Yourself" the Youtuber, helped me with tool recomendations like packages, and languages to use
 and made me interested in learning about logic especially propositional logic 
-and Haskell and Elm. He is building a website soon, stay tune for that if you like 
+and Haskell and Elm. He is building a website soon so stay tune for that if you like 
 logic, veganism, functional programming, philosophy, and debates. 
-[Ask Yourself](https://youtube.com/@askyourself?si=4yBpzSoCtESBdr9D) 
-His twitter with link to his discord server: 
+[Ask Yourself's Youtube Channel](https://youtube.com/@askyourself?si=4yBpzSoCtESBdr9D) 
+His twitter link: 
  [AY Twitter](https://x.com/askyourself92?s=21)
 
 AI helped me when I was stuck . 
