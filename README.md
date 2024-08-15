@@ -1,29 +1,38 @@
 # *Truth Table Generator* 
 This program has an Elm front end for a web app, and a Haskell back end. 
-It is still being edited to add ->
-> 1. Testing for backend and front end. 
-> 2. Better UI for more attractiveness. 
-> 3. More logical operators. 
+It is still being edited and improved. 
+To use this locally as the code is for the back end, 
+you would have to install basically ghc , the haskell compiler, cabal-install, 
+and elm compiler as far as I know. 
+
 ## Tutorial 
-You must compile Main.elm into a main.js file. 
-I have not done it because I am still adding stuff to this project. 
-Enter one or more propositions separated line by line , therefore symbol to seperate conclusion. 
-You can also enter more than one conclusion, if you seperate them also line by line. 
-**Pictures of front end web app** 
+> You must compile Main.elm into a main.js file. 
+> elm make Main.elm --optimize --output=main.js
+> I have not done it because I am still adding stuff to this project. 
 
+I called the bottom "www.simplifyLogic.com" 
+because if I decide to make a website with tools for logic, 
+that would be a name I might pick. 
 
+I did not put cells for the table but I can add it later. 
 
 Generate Truth Table for Propositions. 
-![Screenshot 2024-08-11 3 11 33 PM](https://github.com/user-attachments/assets/402b2eef-e3e1-4cf7-b19b-dfe61bcd1234)
+![Screenshot 2024-08-14 7 46 20 PM](https://github.com/user-attachments/assets/343cd8d5-da5c-44e6-b778-eb825350fab5)
 
 
 Generate Truth Table for Arguments in propositional logic. 
-![Screenshot 2024-08-11 3 13 13 PM](https://github.com/user-attachments/assets/04f7a200-4ed1-48fc-9e10-1ecc335c4473)
+![Screenshot 2024-08-14 7 45 38 PM](https://github.com/user-attachments/assets/5cb2f9ec-fcc7-46e5-9844-5cddf4a7abcc)
+
 
 
 
 ### Acknowledgements
-People helped me choose the tools to use . 
+People including the Youtuber (Ask Yourself) 
+helped me choose the tools to use . 
+He inspired me to learn Propositional logic, and these functional
+programming languages, Elm , and Haskell. 
+
+Tools for front end. 
 elm-ui package helped me.
 [elm-ui](https://package.elm-lang.org/packages/mdgriffith/elm-ui/latest/)
 
