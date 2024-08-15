@@ -1,16 +1,19 @@
-module Main exposing (..)
+port module Main exposing (..)
 
 import Element as E exposing (..)
 import Element.Border as B exposing (..)
 import Element.Input as EI exposing (..)
 import Element.Events exposing (onClick)
 import Element.Background as Background exposing (..)
+import Element.Font as Font exposing (..)
 import Html exposing (..)
 import Http 
-import Element.Font as Font exposing (..)
 import Json.Decode as D exposing (..)
 import Json.Encode as E exposing (..)
 import Browser
+import Messages exposing (..)
+import Colors exposing (..)
+import LogicButtons as L exposing (keyboard)
 
 main = Browser.element
      { init = init
@@ -23,6 +26,7 @@ type alias Model =
    { status : Status
    , argument : String
    , lightMode : LightMode
+   , mat       : Bool
    }
 
 type alias LightMode = Bool
@@ -30,7 +34,7 @@ type alias LightMode = Bool
 type Status
    = Failure (Maybe String, Maybe Int)
    | Loading 
-   | Success HaskellServerResponse
+   | Success Messages.HaskellServerResponse
    | Default
 
 init : () -> (Model , Cmd Msg)
@@ -39,24 +43,13 @@ init _ =
      {status = Default
      , argument = ""
      , lightMode = False
+     , mat = False
      }
    , Cmd.none
    )
----- OUR MSGS
-type Msg = SendArgHttpPost
-         | GotJson (Result Http.Error HaskellServerResponse)
-         | UpdateArgument String
-         | LightSwitch Bool
 
-------- THIS IS part of our VIEW MODULE, What in the FUCK we are RENDERING ON SCREEN. 
+port copyToClipboard : String -> Cmd msg
 
-
-
-------------------
-
-
-
--- BACKGROUNDS BOTH DARK AND LIGHT RULES
 -- JUST PICK DARK ONES AND LIGHT ONES EACH
 {-
 background colors
@@ -84,331 +77,239 @@ Cursor = Rosewater
 
 -- Latte Section
 -- LIGHT
-backgroundPaneLight : Color
-backgroundPaneLight = rgb255 239 241 245  
-secondaryPaneLight = rgb255 220 224 232   -- Crust
-surfaceElementLight = rgb255 172 176 190 -- Surface2
-overlayLight = rgb255 124 127 147 --overlay 2
--- Typography section
-mainHeadlineLight = rgb255 76 79 105
-bodyCopyLight = mainHeadlineLight
-subHeadlinesLabelsLight = rgb255 92 95 119
-successLight = rgb255 64 260 43
-errorsLight = rgb255 210 15 57
-cursorLight = rgb255 220 238 120
 
 
--- FRAPPE DARK
-backgroundPaneDark : Color 
-backgroundPaneDark = rgb255 48 52 70 -- Base
-secondaryPaneDark = rgb255 35 38 52  -- Crust
-surfaceElementDark = rgb255 98 104 128 -- Surface2
-overlayDark = rgb255 148 156 187 --Overlay2
---TypoGraphy section
-mainHeadlineDark = rgb255 198 208 245 --Text
-bodyCopyDark = mainHeadlineDark
-subHeadlinesLabelsDark = rgb255 181 191 226 -- subtext1
-successDark = rgb255 166 209 137
-errorsDark = rgb255 231 130 132
-
-           
 myRowOfStuff : Model -> Element Msg
 myRowOfStuff model =
-    case model.lightMode of
-     True -> row [E.width fill, centerY, spacing 30, Background.color secondaryPaneLight]
-             [E.el [ E.alignRight] (myArgumentBoxElement model)
-             , submitArgButton model 
-             , lightModebox model
-             ]
-     False -> row [E.width fill, centerY, spacing 30, Background.color secondaryPaneDark]
-              [E.el [ E.alignRight] (myArgumentBoxElement model)
-              , submitArgButton model 
-              , lightModebox model
-              ]
+    row [E.width fill, centerY, spacing 30, Background.color (if model.lightMode then secondaryPaneLight else secondaryPaneDark)]
+    [ E.el [E.alignRight] (myArgumentBoxElement model)
+    , submitArgButton model 
+    , lightModebox model
+    ]
+
 myArgumentBoxElement : Model -> Element Msg
 myArgumentBoxElement model =
-    case model.lightMode of
-     True -> E.el 
-             [ Background.color surfaceElementLight, B.rounded 3
+             E.el 
+             [ Background.color (if model.lightMode then surfaceElementLight else secondaryPaneDark), B.rounded 3
              , padding 30
+             , B.rounded 4
              ]
              (inputArgumentBox model) 
-     False ->  E.el 
-             [ Background.color surfaceElementDark, B.rounded 3
-             , padding 30
-             ]
-             (inputArgumentBox model) 
+ 
 
 inputArgumentBox : Model -> Element Msg
 inputArgumentBox model = 
-     case model.lightMode of
-      True -> EI.multiline [Background.color surfaceElementLight,Font.color bodyCopyLight, Font.family [Font.typeface "Regular"]] 
+              EI.multiline 
+              [Background.color (if model.lightMode then surfaceElementLight else surfaceElementDark)
+              ,Font.color (if model.lightMode then bodyCopyLight else bodyCopyDark)
+              , Font.family [Font.typeface "Regular"]
+              ] 
               { onChange = UpdateArgument
               , text = model.argument
               , placeholder = Nothing
-              , label = EI.labelAbove [Font.color subHeadlinesLabelsLight, Font.family [Font.typeface "Bold"]] (E.text "Prop Box")
+              , label = EI.labelAbove 
+                        [Font.color (if model.lightMode then subHeadlinesLabelsLight else subHeadlinesLabelsLight)
+                        , Font.family [Font.typeface "Bold"]
+                        ] 
+                        (E.text "Prop Box")
               , spellcheck = False
               }
-      False -> EI.multiline [Background.color surfaceElementDark, Font.color bodyCopyDark, Font.family [Font.typeface "Regular"]] 
-               { onChange = UpdateArgument
-               , text = model.argument
-               , placeholder = Nothing
-               , label = EI.labelAbove [Font.color subHeadlinesLabelsDark, Font.family [Font.typeface "Bold"]] (E.text "Prop Box")
-               , spellcheck = False
-               }
+
 
 submitArgButton : Model -> Element Msg
-submitArgButton m = 
-   case m.lightMode of
-    True -> E.el
-            [Background.color surfaceElementLight
-            , Font.color bodyCopyLight
-            , B.rounded 3
+submitArgButton model = 
+            E.el
+            [Background.color (if model.lightMode then surfaceElementLight else surfaceElementDark)
+            , Font.color (if model.lightMode then bodyCopyLight else bodyCopyDark)
+            , B.rounded 4
             , B.color secondaryPaneLight
             , padding 30
             ]
-           (EI.button [pointer, Background.color surfaceElementLight] 
+           (EI.button [pointer, Background.color (if model.lightMode then surfaceElementLight else surfaceElementDark)] 
             { onPress = Just SendArgHttpPost
-            , label = E.el [Font.color bodyCopyLight] (E.text "Submit")
-            }
-           )
-    False -> E.el
-            [Background.color surfaceElementDark
-            , Font.color bodyCopyDark
-            , B.rounded 3
-            , B.color secondaryPaneDark
-            , padding 30
-            ]
-           (EI.button [pointer, Background.color surfaceElementDark] 
-            { onPress = Just SendArgHttpPost
-            , label = E.el [Font.color bodyCopyDark] (E.text "Submit")
+            , label = E.el 
+                      [Font.color (if model.lightMode then bodyCopyLight else bodyCopyDark)
+                      ,Font.family [Font.typeface "Regular"]
+                      ] 
+                      (E.text "Submit")
             }
            )
 
 lightModebox : Model -> Element Msg
-lightModebox m = 
-    case m.lightMode of
-     True -> EI.checkbox
-             [ Background.color surfaceElementLight
+lightModebox model = 
+             EI.checkbox
+             [ Background.color (if model.lightMode then surfaceElementLight else surfaceElementDark)
              , pointer
              ]
-             {onChange = LightSwitch
-             , icon = defaultCheckbox
-             , checked = m.lightMode
-             , label = EI.labelBelow [Font.color subHeadlinesLabelsLight, Font.family [Font.typeface "Bold"]] (E.text "Toggle Light Mode" )
-             } 
-     False ->  EI.checkbox
-             [ Background.color surfaceElementDark
-             , pointer
-             ]
-             {onChange = LightSwitch
-             , icon = defaultCheckbox
-             , checked = m.lightMode
-             , label = EI.labelBelow [Font.color subHeadlinesLabelsDark, Font.family [Font.typeface "Bold"]] (E.text "Toggle Light Mode" )
+             { onChange = LightSwitch
+             , icon = \_ -> E.none
+             , checked = model.lightMode
+             , label = EI.labelBelow 
+                       [ Font.color (if model.lightMode then subHeadlinesLabelsLight else subHeadlinesLabelsDark)
+                       , Font.family [Font.typeface "Bold"]
+                       ] 
+                       (E.text "Toggle Light Mode" )
              } 
 
-title : Model -> Element Msg
-title model =
-  case model.lightMode of
-   True -> E.el 
-           [ 
-             Background.color surfaceElementLight
-           , Font.color mainHeadlineLight
-           , Font.family
-             [Font.typeface "ExtraBold"
-             ]
-           , B.rounded 3
-           , padding 0
-           , alignTop
-           , E.centerX
-           ]
-           (E.text "Truth Table Generator") 
-   False ->  E.el 
-             [ Background.color surfaceElementDark
-             , Font.color mainHeadlineDark
-             , Font.family
-               [Font.typeface "ExtraBold"
-               ]
-             , B.rounded 3
-             , padding 0
-             , alignTop
-             , E.centerX
-             ]
-             (E.text "Truth Table Generator") 
 
 
 loadingMessage : Model -> Element Msg
 loadingMessage model =
-   case model.lightMode of
-    True -> E.el 
-            [ Background.color surfaceElementLight
-            , Font.color bodyCopyLight
+            E.el 
+            [ Background.color (if model.lightMode then surfaceElementLight else surfaceElementDark)
+            , Font.color (if model.lightMode then bodyCopyLight else bodyCopyDark)
             , B.rounded 3
             ]
             (E.text "loading table ...") 
-    False -> E.el 
-             [ Background.color surfaceElementDark
-             , Font.color bodyCopyDark
-             , B.rounded 3
-             ]
-             (E.text "loading table ...") 
 
 truthTableElement : Model -> Element Msg -> Element Msg
 truthTableElement model m =
-   case model.lightMode of
-    True -> E.el 
-            [ Background.color surfaceElementLight
-            , Font.color bodyCopyLight
+            E.el 
+            [ Background.color (if model.lightMode then surfaceElementLight else surfaceElementDark)
+            , Font.color (if model.lightMode then bodyCopyLight else bodyCopyDark)
             , B.rounded 3
+            , E.width E.fill
+            , E.height E.fill
             ]
             (m)
-    False ->  E.el 
-              [ Background.color surfaceElementDark
-              , Font.color bodyCopyDark
-              , B.rounded 3
-              ]
-              (m)
 
+keyboardMat : Model -> Element Msg
+keyboardMat model =
+    E.el
+    [Background.color (if model.lightMode then secondaryPaneLight else secondaryPaneDark)
+    ]
+    (L.keyboard model.lightMode)
+
+displayMat : Model -> Element Msg
+displayMat model =
+  EI.checkbox 
+  []
+  {onChange = DisplayMat
+  ,icon = \b -> E.none
+  ,checked = model.mat
+  , label = EI.labelBelow 
+            [ Font.color (if model.lightMode then subHeadlinesLabelsLight else subHeadlinesLabelsDark)
+            , Font.family [Font.typeface "Bold"]
+            ] 
+            (E.text "Toggle Logic Keyboard" )
+  }
+
+matBox : Element Msg -> Model -> Element Msg
+matBox underThis model = 
+   E.el [Background.color yellow, E.below (displayMat model)]  
+   (underThis)
 
 view : Model -> Html Msg
 view model =
- case model.lightMode of
-  False   -> E.layout [Background.color backgroundPaneDark] (viewPrime model)
-  True    -> E.layout [Background.color backgroundPaneLight] (viewPrime model) 
+    E.layout
+        [ Background.color (if model.lightMode then backgroundPaneLight else backgroundPaneDark)
+        ]
+        (E.column
+            [ E.width E.fill
+            , E.height E.fill
+            , E.spacing 20
+            ]
+            [ viewTitle model
+            , E.el
+                [ E.width E.fill
+                , E.height E.fill
+                , E.centerY
+                ]
+                (viewPrime model)
+            ,   E.row[spacing 20]
+                [ E.el
+                  [ E.width (E.px 55)
+                  , E.height (E.px 55)
+                  , E.alignLeft
+                  , E.alignBottom
+                  , Background.image "images/elmLogo.png"
+                  ]
+                  (E.el [] E.none)
+                , E.el  
+                  [Font.family [Font.typeface "SemiBold"]
+                  ,Font.color (if model.lightMode then bodyCopyLight else bodyCopyDark)
+                  ]
+                  (E.text "www.simplifyLogic.com")
+                ]
+            ]
+        )
+
+viewTitle : Model -> Element Msg
+viewTitle model =
+    E.el
+        [ E.width E.fill
+        , Font.center
+        , Font.size 24
+        , Font.family [ Font.typeface "Bold"]
+        , Font.color (if model.lightMode then mainHeadlineLight else mainHeadlineDark)
+        , Background.color (if model.lightMode then backgroundPaneLight else backgroundPaneDark)
+        ]
+        (E.text "Truth Table Generator")
+
+
 
 viewPrime : Model -> Element Msg
 viewPrime  model =
-   case model.lightMode of
-    True -> 
       case model.status of
-       Default -> E.column [Background.color secondaryPaneLight , E.centerX , spacing 10] 
-                  [ title model
-                  , myRowOfStuff model 
+       Default -> E.column [Background.color (if model.lightMode then secondaryPaneLight else secondaryPaneDark), spacing 50, E.centerY, E.centerX] 
+                  [ matBox (myRowOfStuff model) model 
+                  , if model.mat then keyboardMat model else E.none
                   ]
-       Loading -> E.column [Background.color secondaryPaneLight , E.centerX , spacing 10] 
-               [ title model
-               , myRowOfStuff model 
+       Loading -> E.column [Background.color (if model.lightMode then secondaryPaneLight else secondaryPaneDark), spacing 50, E.centerY, E.centerX] 
+               [ matBox (myRowOfStuff model) model 
                , loadingMessage model
                ]
-       Failure tuple  ->  column [Background.color secondaryPaneLight , E.centerX , spacing 10] 
-                       [ title model
-                       , myRowOfStuff model 
-                       , E.el [Font.color errorsLight] (E.text "Error found")
-                       , E.el [Font.color errorsLight] ((E.text (Maybe.withDefault "" (Tuple.first tuple))))
+       Failure tuple  ->  column [Background.color (if model.lightMode then secondaryPaneLight else secondaryPaneDark), spacing 50, E.centerY, E.centerX] 
+                       [ matBox (myRowOfStuff model) model 
+                       , if model.mat then keyboardMat model else E.none
+                       , E.el [Font.color (if model.lightMode then errorsLight else errorsDark)] (E.text "Error found")
+                       , E.el [Font.color (if model.lightMode then errorsLight else errorsDark)] ((E.text (Maybe.withDefault "" (Tuple.first tuple))))
                        ]
                      
        Success h -> case String.isEmpty h.err of
-                     True -> column [Background.color secondaryPaneLight, E.centerX ,  spacing 10]
-                             [ title model
-                             , myRowOfStuff model 
+                     True -> column [Background.color (if model.lightMode then secondaryPaneLight else secondaryPaneDark), spacing 50,E.centerY, E.centerX]
+                             [ matBox (myRowOfStuff model) model 
+                             , if model.mat then keyboardMat model else E.none
                              , truthTableElement model (createTruthTable h)
                              , case h.validityy of
                                 "Nothing" -> E.none
-                                _         -> (E.text h.validityy)
+                                _         -> (showValidity model h.validityy)
                              ]
 
-                     _    -> column [Background.color secondaryPaneLight, E.centerX , spacing 10]
-                             [ title model
-                             , myRowOfStuff model 
-                             , E.el [Font.color errorsLight] (E.text "There was a parsing error")
-                             , E.el [Font.color errorsLight] ((E.text "Sorry :("))
-                             , E.el [Font.center, Font.color errorsLight] (E.text h.err)
+                     _    -> column [Background.color (if model.lightMode then secondaryPaneLight else secondaryPaneDark), spacing 50,E.centerY, E.centerX]
+                             [ matBox (myRowOfStuff model) model 
+                             , if model.mat then keyboardMat model else E.none
+                             , E.el [Font.color (if model.lightMode then errorsLight else errorsDark)] (E.text "There was a parsing error")
+                             , E.el [Font.color (if model.lightMode then errorsLight else errorsDark)] ((E.text "Sorry :("))
+                             , E.el [Font.center, Font.color (if model.lightMode then errorsLight else errorsDark)] (E.text h.err)
                              ]
-    False -> case model.status of
-              Default -> E.column [Background.color secondaryPaneDark, E.centerX , spacing 10] 
-                         [ title model
-                         , myRowOfStuff model 
-                         ]
-              Loading -> E.column [Background.color secondaryPaneDark, E.centerX , spacing 10] 
-                         [ title model
-                         , myRowOfStuff model 
-                         , loadingMessage model
-                         ]
-              Failure tuple  ->  column [Background.color secondaryPaneDark, E.centerX , spacing 10] 
-                                 [ title model
-                                 , myRowOfStuff model 
-                                 , E.el [Font.color errorsDark] (E.text "Error found")
-                                 , E.el [Font.color errorsDark] ((E.text (Maybe.withDefault "" (Tuple.first tuple))))
-                                 ]
-                     
-              Success h -> case String.isEmpty h.err of
-                            True -> 
-                               column [Background.color secondaryPaneDark, E.centerX ,  spacing 10]
-                                      [ title model
-                                      , myRowOfStuff model 
-                                      , truthTableElement model (createTruthTable h)
-                                      , case h.validityy of
-                                         "Nothing" -> E.none
-                                         _         -> (showValidity model h.validityy)
-                                      ]
-
-                            _    -> column [Background.color secondaryPaneDark, E.centerX , spacing 10]
-                                    [ title model
-                                    , myRowOfStuff model 
-                                    , E.paragraph [Font.color errorsDark] 
-                                      [E.text "There was a parsing error"
-                                      ,E.text "Sorry :("
-                                      ,E.el [Font.center] (E.text h.err)
-                                      ]
-                                    ]
+       
 
    
 showValidity : Model -> String -> Element Msg
 showValidity model s =
-  case model.lightMode of
-   True ->   case s of
-              "Invalid" -> E.el
-                           [Font.color errorsLight
-                           ,Font.size 18
-                           , Font.center
-                           , Font.family
-                           [Font.typeface "Open Sans"
-                           ,Font.sansSerif
-                           ]
-                           ]
-                           (E.text s)
-              _         -> E.el
-                           [Font.color successLight
-                           ,Font.size 18
-                           , Font.center
-                           , Font.family
-                           [Font.typeface "Open Sans"
-                           ,Font.sansSerif
-                           ]
-                           ]
-                           (E.text s)
-
-   False ->    case s of
-               "Invalid" -> E.el
-                            [Font.color errorsDark
-                            ,Font.size 18
-                            , Font.center
-                            , Font.family
-                            [Font.typeface "Open Sans"
-                            ,Font.sansSerif
-                            ]
-                            ]
-                            (E.text s)
-               _         -> E.el
-                            [Font.color successDark
-                            ,Font.size 18
-                            , Font.center
-                            , Font.family
-                            [Font.typeface "Open Sans"
-                            ,Font.sansSerif
-                            ]
-                            ]
-                            (E.text s)
+      case s of
+       "Invalid" -> E.el
+                    [Font.color (if model.lightMode then errorsLight else errorsDark)
+                    ,Font.size 18
+                    , Font.center
+                    , E.centerX
+                    , Font.family [Font.typeface "Regular"]
+                    ]
+                    (E.text s)
+       _         -> E.el
+                    [Font.color (if model.lightMode then successLight else successDark)
+                    ,Font.size 18
+                    , Font.center
+                    , E.centerX
+                    , Font.family [Font.typeface "Regular"]
+                    ]
+                    (E.text s)
 
 
-type alias HaskellServerResponse =
-      { err : String
-      , headers : List String
-      , assignments : List (String, List Bool)
-      , premiseEval : List (List (String,Bool))
-      , conclusionEval : List (String, Bool)
-      , validityy : String
-      }
+
+
+
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -440,6 +341,22 @@ update msg model =
    UpdateArgument newArgument ->
     ({model | argument = newArgument}, Cmd.none)
    LightSwitch b -> ({model | lightMode = b}, Cmd.none) 
+   LogicButton bf   -> case bf of
+                          If -> (model, copyToClipboard "\u{2192}")
+                          Iff ->(model, copyToClipboard "\u{2194}")
+                          Not -> (model, copyToClipboard "\u{00AC}")
+                          And -> (model, copyToClipboard "\u{2227}")
+                          Or  -> (model, copyToClipboard "\u{2228}")
+                          Xor -> (model, copyToClipboard "\u{22BB}")
+                          Therefore -> (model,copyToClipboard "\u{2234}")
+                          Nand -> (model,copyToClipboard "\u{22BC}")
+                          Nor  -> (model,copyToClipboard "\u{22BD}")
+   DisplayMat m   -> case m of
+                      True -> ({model | mat = True }, Cmd.none)
+                      False -> ({model | mat = False}, Cmd.none)
+                  
+
+
 
 --------------------------------------------------
 -- THIS IS OUR DATA TYPE FOR CREATING A TABLE
@@ -452,7 +369,7 @@ type alias Argument =
 ------
 ----- CREATING TRUTH TABLE FROM RESPONSE FROM BACK END -------------
 
-createTruthTable : HaskellServerResponse -> Element Msg
+createTruthTable : Messages.HaskellServerResponse -> Element Msg
 createTruthTable h =
     let vars = Tuple.first (Maybe.withDefault ("",[]) (List.head (h.assignments)))
         isArg : Bool
@@ -468,7 +385,7 @@ createTruthTable h =
 
 -- foldr : (a -> b -> b) -> b -> List a -> b
 
-createArguments : HaskellServerResponse -> Bool -> List Argument
+createArguments : Messages.HaskellServerResponse -> Bool -> List Argument
 createArguments h isArgument = 
       case h.assignments of
        [] -> []
@@ -487,14 +404,12 @@ createArguments h isArgument =
 
 stylePropositions : String -> Element Msg
 stylePropositions s = E.el
-                  [Font.color backgroundPaneDark
-                  , Font.italic
-                  , Font.family
-                    [Font.typeface "Open Sans"
-                    ,Font.sansSerif
-                    ]
+                  [ Font.color backgroundPaneDark
+                  , Font.family [Font.typeface "SemiBold"]
+                  , Font.center
                   ]
-                   (E.text s)
+                  (E.text s)
+
 createColumns : String -> List String -> List (Column Argument Msg)
 createColumns vars headerS =   
   let tailify : String -> String
@@ -503,18 +418,18 @@ createColumns vars headerS =
       tailifyList l = Maybe.withDefault [] (List.tail l) 
   in case headerS of
       [] -> []
-      [h] -> List.singleton { header = column [B.width 1, B.solid, B.color backgroundPaneDark] [E.el [E.centerX, E.centerY] (stylePropositions h)]
+      [h] -> List.singleton { header =  stylePropositions h
                             , width = fill
-                            , view = \arg -> column [B.width 1, B.solid, B.color backgroundPaneDark] [viewMaybeConc h arg]
+                            , view = \arg -> viewMaybeConc h arg
                             }
       (headerr :: headerss) -> case List.isEmpty (String.toList vars) of
-                                True -> {header = column [B.width 1, B.solid, B.color backgroundPaneDark] [E.el [E.centerX, E.centerY] (stylePropositions headerr)]
+                                True -> {header = stylePropositions headerr
                                         , width = fill
-                                        , view  = \arg -> column [B.width 1, B.solid, B.color backgroundPaneDark] [viewProp headerr arg]
+                                        , view  = \arg -> viewProp headerr arg
                                         } :: (createColumns (tailify vars) (tailifyList headerS) )
-                                False -> {header = column [B.width 1, B.solid, B.color backgroundPaneDark] [E.el [E.centerX, E.centerY] (E.text headerr)]
+                                False -> {header = E.el [Font.family [Font.typeface "SemiBold"] , Font.center] (E.text headerr)
                                          , width = fill
-                                         , view  = \arg -> column [B.width 1, B.solid, B.color backgroundPaneDark] [viewVar headerr arg]
+                                         , view  = \arg -> viewVar headerr arg
                                          } :: (createColumns (tailify vars) (tailifyList headerS))
 
 toChar : String -> Char
@@ -555,7 +470,7 @@ viewVar : String -> Argument -> Element Msg
 viewVar var arg = 
    let indexOfVar  = Maybe.withDefault (-1) (getIndex (toChar var) (Tuple.first arg.assignment))
        boolean     = Maybe.withDefault True (index indexOfVar (Tuple.second arg.assignment))
-   in  E.el [E.centerX, E.centerY] (E.text (fromBool boolean))
+   in  E.el [Font.family [Font.typeface "Regular"] , Font.center] (E.text (fromBool boolean))
 
 
 viewMaybeConc : String -> Argument -> Element Msg
@@ -563,7 +478,7 @@ viewMaybeConc maybeConc arg =
      case arg.conclusion of
       Nothing -> viewProp maybeConc arg
       (Just t) -> let b = Tuple.second t
-                  in E.el [E.centerX, E.centerY] (E.text <| fromBool <| b)
+                  in E.el [Font.family [Font.typeface "Regular"] , Font.center ] (E.text <| fromBool <| b)
 
 viewProp : String -> Argument -> Element Msg
 viewProp prop arg = 
@@ -579,13 +494,13 @@ viewProp prop arg =
          myPropBoolean : Bool
          myPropBoolean = Tuple.second myPropDouble
      in 
-      E.el [E.centerX, E.centerY](E.text (fromBool myPropBoolean))
+      E.el [Font.family [Font.typeface "Regular"] , Font.center ](E.text (fromBool myPropBoolean))
 --- ENDING OF CREATING TRUTH TABLE
 -----------------------------------------                            
 --- JSON DECODER FOR HASKELL BACKEND
-haskellResponseDecoder : Decoder HaskellServerResponse
+haskellResponseDecoder : Decoder Messages.HaskellServerResponse
 haskellResponseDecoder =
-    D.map6 HaskellServerResponse 
+    D.map6 Messages.HaskellServerResponse 
         (D.field "err" D.string)
         (D.field "headers" (D.list D.string))
         (D.field "assignments" (D.list (D.map2 Tuple.pair (D.index 0 D.string) (D.index 1 (D.list D.bool)))))
@@ -597,4 +512,3 @@ haskellResponseDecoder =
 subscriptions : Model -> Sub Msg
 subscriptions model = Sub.none
 --
-
