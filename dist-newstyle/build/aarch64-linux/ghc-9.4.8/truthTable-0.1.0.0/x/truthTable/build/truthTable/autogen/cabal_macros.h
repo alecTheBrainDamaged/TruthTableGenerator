@@ -60,6 +60,16 @@
   (major1) == 0 && (major2) <  22 || \
   (major1) == 0 && (major2) == 22 && (minor) <= 0)
 #endif /* MIN_VERSION_scotty */
+/* package tasty-quickcheck-0.11 */
+#ifndef VERSION_tasty_quickcheck
+#define VERSION_tasty_quickcheck "0.11"
+#endif /* VERSION_tasty_quickcheck */
+#ifndef MIN_VERSION_tasty_quickcheck
+#define MIN_VERSION_tasty_quickcheck(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  11 || \
+  (major1) == 0 && (major2) == 11 && (minor) <= 0)
+#endif /* MIN_VERSION_tasty_quickcheck */
 /* package text-2.1.1 */
 #ifndef VERSION_text
 #define VERSION_text "2.1.1"
@@ -70,6 +80,16 @@
   (major1) == 2 && (major2) <  1 || \
   (major1) == 2 && (major2) == 1 && (minor) <= 1)
 #endif /* MIN_VERSION_text */
+/* package wai-middleware-static-0.9.2 */
+#ifndef VERSION_wai_middleware_static
+#define VERSION_wai_middleware_static "0.9.2"
+#endif /* VERSION_wai_middleware_static */
+#ifndef MIN_VERSION_wai_middleware_static
+#define MIN_VERSION_wai_middleware_static(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  9 || \
+  (major1) == 0 && (major2) == 9 && (minor) <= 2)
+#endif /* MIN_VERSION_wai_middleware_static */
 
 /* tool gcc-12.3.0 */
 #ifndef TOOL_VERSION_gcc

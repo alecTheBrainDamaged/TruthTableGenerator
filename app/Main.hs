@@ -1,8 +1,10 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 
-module Main where
 
+-- cheese
+module Main where
+--water
 import Evaluator
 import Parser
 import System.IO
@@ -11,13 +13,13 @@ import Web.Scotty hiding (headers)
 import Types
 import GHC.Generics (Generic)
 import Data.Aeson (FromJSON, ToJSON)
-import Data.Text.Lazy (Text)
-import qualified Data.Text.Lazy as TL
-import Data.Text
 import Data.Maybe (fromJust)
 import Text.Megaparsec.Error (errorBundlePretty)
+import Network.Wai.Middleware.Static (staticPolicy, addBase)
+
 
 data ArgumentJSON = ArgumentJSON { argument :: String } deriving (Show, Generic)
+
 
 
 
@@ -42,6 +44,7 @@ data HaskellServerResponse = Table
                            , validityy :: String
                            } deriving (Show, Generic)
 -}
+
 instance FromJSON ArgumentJSON
 instance ToJSON ArgumentJSON
 instance FromJSON HaskellServerResponse
@@ -102,11 +105,19 @@ data TruthTable = TruthTable
                 deriving (Eq, Show)
 -}
 
+parseErrorMessage :: String -> String
+parseErrorMessage s =
+    let l = words s
+        unwanted = dropWhile (/= "unexpected") l
+        wanted = takeWhile (/= "unexpected") l
+    in  concat $ (wanted ++ (take 3 unwanted))
 
 main :: IO ()
 main = scotty 8000 $ do
-       get "/" $ do
-                  file "static/elmStatic/src/index.html"
+       middleware $ staticPolicy (addBase "static2/")
+       middleware $ staticPolicy (addBase "static/elmStatic/")
+       get "/" (file "static2/index.html")
+       get "/t" (file "static/elmStatic/index.html")
        post "/api/submit" $ do
            body' <- jsonData :: ActionM ArgumentJSON
            let argString = argument body' :: String
@@ -114,7 +125,7 @@ main = scotty 8000 $ do
            case result of
             (Left err', _ ) -> do
                                 setHeader "Content-Type" "application/json"
-                                json $ Table { err = errorBundlePretty err'
+                                json $ Table { err = parseErrorMessage $ errorBundlePretty err'
                                              , headers = []
                                              , Main.assignments = []
                                              , premiseEval = []
@@ -125,7 +136,7 @@ main = scotty 8000 $ do
                         let truthtable = generateTruthTable e :: TruthTable
                         json $ truthTableToResponse truthtable
 
---------------------------------------
+ --------------------------------------
 {-  HTML -}
 
 

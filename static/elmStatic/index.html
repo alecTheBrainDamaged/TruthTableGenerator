@@ -1,0 +1,26 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="/lexendFonts.css">
+  <meta charset="UTF-8">
+  <title>Main</title>
+  <script src="truth.js"></script>
+</head>
+<body>
+  <div id="myapp"></div>
+  <script>
+
+  var app = Elm.Main.init({
+    node: document.getElementById('myapp')
+  });
+
+  function copyToClipboard(text) {
+      navigator.clipboard.writeText(text)
+          .then(() => console.log('Text copied to clipboard'))
+          .catch(err => console.error('Failed to copy text: ', err));
+  }
+
+  app.ports.copyToClipboard.subscribe(copyToClipboard);
+
+  </script>
+</body>
+</html>

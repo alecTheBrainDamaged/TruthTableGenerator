@@ -4,9 +4,14 @@
 module Evaluator where
 
 import Types
-import Data.List (nub, concatMap)
+import Data.List (nub, concatMap, findIndex, elemIndex)
 import Control.Monad (replicateM)
 import Data.Maybe (fromJust)
+
+top :: Char
+top = '\x22A4'
+bottom :: Char
+bottom = '\x22A5'
 
 generateTruthTable:: (Either Argument Premises) -> TruthTable
 generateTruthTable e =
@@ -63,33 +68,65 @@ generateTruthTable e =
         where
           getVars :: Proposition -> String
           getVars (Var c) = [c]
+          getVars Top     = [top]
+          getVars Bottom  = [bottom]
           getVars (Not p) = getVars p
           getVars (And prop1 prop2) = (getVars prop1) ++ (getVars prop2)
           getVars (Or prop1 prop2) = (getVars prop1) ++ (getVars prop2)
-          getVars (If prop1 prop2) = (getVars prop1) ++ (getVars prop2)
+          getVars (IfThen prop1 prop2) = (getVars prop1) ++ (getVars prop2)
           getVars (Iff prop1 prop2) = (getVars prop1) ++ (getVars prop2)
           getVars (Xor prop1 prop2) = (getVars prop1) ++ (getVars prop2)
           getVars (Nor prop1 prop2) = (getVars prop1) ++ (getVars prop2)
           getVars (Nand prop1 prop2) = (getVars prop1) ++ (getVars prop2)
+          getVars (If   prop1 prop2) = (getVars prop1) ++ (getVars prop2)
       getVarsInArg (Left ((premises , conclusion))) = nub $ foldr (\p acc -> (getVars p) ++ acc) (getVars conclusion) premises
         where
           getVars :: Proposition -> String
           getVars (Var c) = [c]
           getVars (Not p) = getVars p
+          getVars Top     = [top]
+          getVars Bottom  = [bottom]
           getVars (And prop1 prop2) = (getVars prop1) ++ (getVars prop2)
           getVars (Or prop1 prop2) = (getVars prop1) ++ (getVars prop2)
           getVars (Xor prop1 prop2) = (getVars prop1) ++ (getVars prop2)
-          getVars (If prop1 prop2) = (getVars prop1) ++ (getVars prop2)
+          getVars (IfThen prop1 prop2) = (getVars prop1) ++ (getVars prop2)
           getVars (Iff prop1 prop2) = (getVars prop1) ++ (getVars prop2)
           getVars (Nor prop1 prop2) = (getVars prop1) ++ (getVars prop2)
           getVars (Nand prop1 prop2)  = (getVars prop1) ++ (getVars prop2)
+          getVars (If   prop1 prop2) = (getVars prop1) ++ (getVars prop2)
 
 
       getBooleanCombos :: String -> [[Bool]]
-      getBooleanCombos s = replicateM (length s) [True,False]
+      getBooleanCombos s =
+          case s of
+           [x] -> case (x == top, x == bottom) of
+                   (True, _) -> return [True]
+                   (_   , True)     -> return [False]
+                   _                ->  do
+                                         true      <- return [True]
+                                         false     <- return [False]
+                                         list      <- [true,false]
+                                         return list
 
-      getAssignments :: String -> [[Bool]]-> [(String, [Bool])]
-      getAssignments s bools =  [(s,combo) | combo <- bools]
+           _        -> do
+                        functions <-  replicateM (length s) [f, g]
+                        charAndFs <-  map (zip s) (return functions)
+                        answer    <-  map (\l -> map (\(arg, f) -> f arg) l ) (return charAndFs)
+                        return answer
+                           where f :: Char -> Bool
+                                 f c = case (c == top, c == bottom) of
+                                        (True, _ )   -> True
+                                        (_   , True) -> False
+                                        _            -> True
+                                 g :: Char -> Bool
+                                 g c = case (c == top, c == bottom) of
+                                        (True, _ )      -> True
+                                        (_   , True)    -> False
+                                        _               -> False
+
+
+      getAssignments :: String -> [[Bool]] -> [(String, [Bool])]
+      getAssignments s bools =  [ (s, combo) | combo <- bools ]
 
       getEveryEval :: Premises -> (String, [Bool]) -> [(Proposition, (String, [Bool]) ,Maybe Bool)]
       getEveryEval premises tuple =
@@ -138,14 +175,25 @@ getEval (Nor p1 p2) tuple = do
         b <- (getEval p1 tuple)
         b' <- (getEval p2 tuple)
         return $ not (b || b')
-getEval (If p1 p2) tuple = do
+getEval (IfThen p1 p2) tuple = do
              b <- (getEval p1 tuple)
              b' <- (getEval p2 tuple)
-             return $ b `if'` b'
-   where if' True False = False
-         if' _ _ = True
+             return $ b `ifthen'` b'
+   where ifthen' True False = False
+         ifthen' _ _ = True
 getEval (Iff p1 p2) tuple = do
              b <- (getEval p1 tuple)
              b' <- (getEval p2 tuple)
              return $ b == b'
+getEval (If p1 p2) tuple = do
+             b <- (getEval p1 tuple)
+             b' <- (getEval p2 tuple)
+             return $ case b' of
+                       True -> case b of
+                                False -> False
+                                _     -> True
+                       _    -> True
+getEval Top _ = return True
+getEval Bottom _ = return False
+
 

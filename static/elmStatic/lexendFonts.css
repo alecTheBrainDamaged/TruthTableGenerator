@@ -1,0 +1,54 @@
+@font-face {
+   font-family: 'ExtraLight';
+   src: url('fonts/fonts/giga/ttf/LexendGiga-ExtraLight.ttf') format('truetype');
+   /* Include additional font weights if available */
+   font-weight: normal;
+ }
+
+@font-face {
+   font-family: 'Bold';
+   src: url('fonts/fonts/giga/ttf/LexendGiga-Bold.ttf') format('truetype');
+   /* Include additional font weights if available */
+   font-weight: normal;
+ }
+
+@font-face {
+   font-family: 'ExtraBold';
+   src: url('fonts/fonts/giga/ttf/LexendGiga-ExtraBold.ttf') format('truetype');
+   /* Include additional font weights if available */
+   font-weight: normal;
+ }
+@font-face {
+   font-family: 'Medium';
+   src: url('fonts/fonts/giga/ttf/LexendGiga-Medium.ttf') format('truetype');
+   /* Include additional font weights if available */
+   font-weight: normal;
+ }
+
+@font-face {
+   font-family: 'SemiBold';
+   src: url('fonts/fonts/giga/ttf/LexendGiga-SemiBold.ttf') format('truetype');
+   /* Include additional font weights if available */
+   font-weight: normal;
+ }
+
+@font-face {
+   font-family: 'Thin';
+   src: url('fonts/fonts/giga/ttf/LexendGiga-Thin.ttf') format('truetype');
+   /* Include additional font weights if available */
+   font-weight: normal;
+ }
+@font-face {
+   font-family: 'Black';
+   src: url('fonts/fonts/giga/ttf/LexendGiga-Black.ttf') format('truetype');
+   /* Include additional font weights if available */
+   font-weight: normal;
+ }
+@font-face {
+   font-family: 'Regular';
+   src: url('fonts/fonts/giga/ttf/LexendGiga-Regular.ttf') format('truetype');
+   /* Include additional font weights if available */
+   font-weight: normal;
+ }
+
+
