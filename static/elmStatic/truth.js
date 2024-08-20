@@ -13732,7 +13732,7 @@ var $author$project$Main$loadingMessage = function (model) {
 				model.c ? $author$project$Colors$surfaceElementLight : $author$project$Colors$surfaceElementDark),
 				$mdgriffith$elm_ui$Element$Font$color(
 				model.c ? $author$project$Colors$bodyCopyLight : $author$project$Colors$bodyCopyDark),
-				$mdgriffith$elm_ui$Element$Border$rounded(3)
+				$mdgriffith$elm_ui$Element$Border$rounded(50)
 			]),
 		$mdgriffith$elm_ui$Element$text('loading table ...'));
 };
@@ -14835,9 +14835,9 @@ var $author$project$Main$myArgumentBoxElement = function (model) {
 			[
 				$mdgriffith$elm_ui$Element$Background$color(
 				model.c ? $author$project$Colors$surfaceElementLight : $author$project$Colors$secondaryPaneDark),
-				$mdgriffith$elm_ui$Element$Border$rounded(3),
+				$mdgriffith$elm_ui$Element$Border$rounded(50),
 				$mdgriffith$elm_ui$Element$padding(30),
-				$mdgriffith$elm_ui$Element$Border$rounded(4)
+				$mdgriffith$elm_ui$Element$Border$rounded(50)
 			]),
 		$author$project$Main$inputArgumentBox(model));
 };
@@ -14852,7 +14852,7 @@ var $author$project$Main$submitArgButton = function (model) {
 				model.c ? $author$project$Colors$surfaceElementLight : $author$project$Colors$surfaceElementDark),
 				$mdgriffith$elm_ui$Element$Font$color(
 				model.c ? $author$project$Colors$bodyCopyLight : $author$project$Colors$bodyCopyDark),
-				$mdgriffith$elm_ui$Element$Border$rounded(4),
+				$mdgriffith$elm_ui$Element$Border$rounded(50),
 				$mdgriffith$elm_ui$Element$Border$color($author$project$Colors$secondaryPaneLight),
 				$mdgriffith$elm_ui$Element$padding(30)
 			]),
@@ -14959,7 +14959,7 @@ var $author$project$Main$truthTableElement = F2(
 					model.c ? $author$project$Colors$surfaceElementLight : $author$project$Colors$surfaceElementDark),
 					$mdgriffith$elm_ui$Element$Font$color(
 					model.c ? $author$project$Colors$bodyCopyLight : $author$project$Colors$bodyCopyDark),
-					$mdgriffith$elm_ui$Element$Border$rounded(3),
+					$mdgriffith$elm_ui$Element$Border$rounded(50),
 					$mdgriffith$elm_ui$Element$Border$solid,
 					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 					$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)

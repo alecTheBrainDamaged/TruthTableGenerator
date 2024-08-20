@@ -1,8 +1,9 @@
 # Ignoring Stuff we don't need
 # Wir brauchen diese Dinge nicht . 
 # I am not German but I can speak it a little. 
-
-./dist-newstyle/
-./static/elmStatic/elm-stuff/
-./static2/elm-stuff/
-
+dist-newstyle/
+elm-stuff/
+*.elmi
+*.elmo
+*.hi
+*.o

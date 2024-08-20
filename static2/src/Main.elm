@@ -7,7 +7,7 @@ import Element exposing (..)
 import Element.Input as Input exposing (..)
 import Element.Background as Background exposing (..)
 import Element.Font as Font exposing (..)
-
+import Element.Border as Border exposing (..)
 
 main =
   Browser.element 
@@ -23,6 +23,8 @@ peachMocha : Color
 peachMocha = rgb255 250 179 135
 skyMocha : Color
 skyMocha = rgb255 137 220 235
+redMocha : Color
+redMocha = rgb255 210 15 57
 baseMocha : Color
 baseMocha = rgb255 30 30 46
 surface2Mocha : Color
@@ -63,6 +65,7 @@ view model =
     [ Element.spacing 50
     , Element.centerX
     , Element.width Element.fill
+    , Border.rounded 50
     ]
     [
       let title = Element.el
@@ -72,6 +75,7 @@ view model =
                   , Font.family [Font.typeface "Bold"]
                   , Font.size 50
                   , Font.color peachMocha
+                  , Border.rounded 50
 
                   ]
                   (Element.text "www.LogicTools.com")
@@ -82,6 +86,7 @@ view model =
                           , Element.centerX
                           , Background.color surface2Mocha
                           , spacing 50
+                          , Border.rounded 50
                           , Font.family [Font.typeface "Regular"]
                           , Font.color textMocha
                           ]
@@ -141,12 +146,14 @@ lineBreak = Element.html (Html.br [] [])
 
 myContactInfo : Element Msg
 myContactInfo = 
-     Element.column [spacing 5, Background.color surface2Mocha]
+     Element.column 
+     [spacing 5, Background.color skyMocha, Font.color redMocha, Border.rounded 50]
      [ Element.el 
        [Font.family [Font.typeface "Bold"], Font.center, Element.centerX ]
        (Element.text "My Contact Info")
      , let mytwitter = Element.el 
-                      [Element.padding 10, Font.family [Font.typeface "Medium"]]
+                      [Element.padding 10
+                      , Font.family [Font.typeface "Medium"]]
                       (
                         Element.link 
                         []

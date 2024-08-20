@@ -11784,7 +11784,8 @@ var $mdgriffith$elm_ui$Element$padding = function (x) {
 			f,
 			f));
 };
-var $author$project$Main$surface2Mocha = A3($mdgriffith$elm_ui$Element$rgb255, 88, 91, 112);
+var $author$project$Main$redMocha = A3($mdgriffith$elm_ui$Element$rgb255, 210, 15, 57);
+var $author$project$Main$skyMocha = A3($mdgriffith$elm_ui$Element$rgb255, 137, 220, 235);
 var $mdgriffith$elm_ui$Internal$Model$Text = function (a) {
 	return {$: 2, a: a};
 };
@@ -11797,7 +11798,9 @@ var $author$project$Main$myContactInfo = A2(
 	_List_fromArray(
 		[
 			$mdgriffith$elm_ui$Element$spacing(5),
-			$mdgriffith$elm_ui$Element$Background$color($author$project$Main$surface2Mocha)
+			$mdgriffith$elm_ui$Element$Background$color($author$project$Main$skyMocha),
+			$mdgriffith$elm_ui$Element$Font$color($author$project$Main$redMocha),
+			$mdgriffith$elm_ui$Element$Border$rounded(50)
 		]),
 	_List_fromArray(
 		[
@@ -11926,6 +11929,7 @@ var $author$project$Main$semanticProofList = $mdgriffith$elm_ui$Element$html(
 							]))
 					]))
 			])));
+var $author$project$Main$surface2Mocha = A3($mdgriffith$elm_ui$Element$rgb255, 88, 91, 112);
 var $author$project$Main$Syntactic = function (a) {
 	return {$: 1, a: a};
 };
@@ -11982,7 +11986,8 @@ var $author$project$Main$view = function (model) {
 				[
 					$mdgriffith$elm_ui$Element$spacing(50),
 					$mdgriffith$elm_ui$Element$centerX,
-					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+					$mdgriffith$elm_ui$Element$Border$rounded(50)
 				]),
 			_List_fromArray(
 				[
@@ -11999,7 +12004,8 @@ var $author$project$Main$view = function (model) {
 										$mdgriffith$elm_ui$Element$Font$typeface('Bold')
 									])),
 								$mdgriffith$elm_ui$Element$Font$size(50),
-								$mdgriffith$elm_ui$Element$Font$color($author$project$Main$peachMocha)
+								$mdgriffith$elm_ui$Element$Font$color($author$project$Main$peachMocha),
+								$mdgriffith$elm_ui$Element$Border$rounded(50)
 							]),
 						$mdgriffith$elm_ui$Element$text('www.LogicTools.com'));
 					return title;
@@ -12013,6 +12019,7 @@ var $author$project$Main$view = function (model) {
 								$mdgriffith$elm_ui$Element$centerX,
 								$mdgriffith$elm_ui$Element$Background$color($author$project$Main$surface2Mocha),
 								$mdgriffith$elm_ui$Element$spacing(50),
+								$mdgriffith$elm_ui$Element$Border$rounded(50),
 								$mdgriffith$elm_ui$Element$Font$family(
 								_List_fromArray(
 									[

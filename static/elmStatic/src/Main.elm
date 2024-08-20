@@ -1,7 +1,7 @@
 port module Main exposing (..)
 
 import Element as E exposing (..)
-import Element.Border as B exposing (..)
+import Element.Border as Border exposing (..)
 import Element.Input as EI exposing (..)
 import Element.Events exposing (onClick)
 import Element.Background as Background exposing (..)
@@ -91,9 +91,9 @@ myRowOfStuff model =
 myArgumentBoxElement : Model -> Element Msg
 myArgumentBoxElement model =
              E.el 
-             [ Background.color (if model.lightMode then surfaceElementLight else secondaryPaneDark), B.rounded 3
+             [ Background.color (if model.lightMode then surfaceElementLight else secondaryPaneDark), Border.rounded 50
              , padding 30
-             , B.rounded 4
+             , Border.rounded 50
              ]
              (inputArgumentBox model) 
  
@@ -122,8 +122,8 @@ submitArgButton model =
             E.el
             [Background.color (if model.lightMode then surfaceElementLight else surfaceElementDark)
             , Font.color (if model.lightMode then bodyCopyLight else bodyCopyDark)
-            , B.rounded 4
-            , B.color secondaryPaneLight
+            , Border.rounded 50
+            , Border.color secondaryPaneLight
             , padding 30
             ]
            (EI.button [pointer, Background.color (if model.lightMode then surfaceElementLight else surfaceElementDark)] 
@@ -159,7 +159,7 @@ loadingMessage model =
             E.el 
             [ Background.color (if model.lightMode then surfaceElementLight else surfaceElementDark)
             , Font.color (if model.lightMode then bodyCopyLight else bodyCopyDark)
-            , B.rounded 3
+            , Border.rounded 50
             ]
             (E.text "loading table ...") 
 
@@ -168,8 +168,8 @@ truthTableElement model m =
             E.el 
             [ Background.color (if model.lightMode then surfaceElementLight else surfaceElementDark)
             , Font.color (if model.lightMode then bodyCopyLight else bodyCopyDark)
-            , B.rounded 3
-            , B.solid
+            , Border.rounded 50
+            , Border.solid
             , E.width E.fill
             , E.height E.fill
             ]
@@ -436,9 +436,9 @@ stylePropositions s = E.el
                   [ Font.color backgroundPaneDark
                   , Font.family [Font.typeface "SemiBold"]
                   , Font.center
-                  , B.solid
-                  , B.width 1
-                  , B.color (rgb255 0 0 0)
+                  , Border.solid
+                  , Border.width 1
+                  , Border.color (rgb255 0 0 0)
                   ]
                   (E.text s)
 
@@ -460,9 +460,9 @@ createColumns vars headerS =
                                         , view  = \arg -> viewPropTruthValue headerr arg
                                         } :: (createColumns (tailify vars) (tailifyList headerS) )
                                 False -> {header = E.el 
-                                                   [ B.width 1
-                                                   , B.solid 
-                                                   , B.color (rgb255 0 0 0 )
+                                                   [ Border.width 1
+                                                   , Border.solid 
+                                                   , Border.color (rgb255 0 0 0 )
                                                    , Font.family [Font.typeface "SemiBold"]  
                                                    , Font.center
                                                    , Font.color bodyCopyDark
@@ -518,7 +518,7 @@ viewMaybeConcTruthValue maybeConc arg =
      case arg.conclusion of
       Nothing -> viewPropTruthValue maybeConc arg
       (Just t) -> let b = Tuple.second t
-                  in E.el [B.solid, B.width 1, B.color (rgb255 0 0 0),Font.family [Font.typeface "Regular"] , Font.center ] (E.text <| fromBool <| b)
+                  in E.el [Border.solid, Border.width 1, Border.color (rgb255 0 0 0),Font.family [Font.typeface "Regular"] , Font.center ] (E.text <| fromBool <| b)
 
 viewPropTruthValue : String -> Argument -> Element Msg
 viewPropTruthValue prop arg = 
@@ -534,7 +534,7 @@ viewPropTruthValue prop arg =
          myPropBoolean : Bool
          myPropBoolean = Tuple.second myPropDouble
      in 
-      E.el [B.solid, B.width 1, B.color (rgb255 0 0 0),Font.family [Font.typeface "Regular"] , Font.center ](E.text (fromBool myPropBoolean))
+      E.el [Border.solid, Border.width 1, Border.color (rgb255 0 0 0),Font.family [Font.typeface "Regular"] , Font.center ](E.text (fromBool myPropBoolean))
 --- ENDING OF CREATING TRUTH TABLE
 -----------------------------------------                            
 --- JSON DECODER FOR HASKELL BACKEND
